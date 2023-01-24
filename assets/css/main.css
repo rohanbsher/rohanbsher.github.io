@@ -287,6 +287,12 @@ input, select, textarea {
 		text-align: right;
 	}
 
+	.center {
+		border: 5px solid;
+  		display: flex;
+  		justify-content: center;
+	}
+
 	input, select, textarea {
 		color: #212931;
 	}
