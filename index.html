@@ -1,142 +1,583 @@
-<!DOCTYPE HTML>
-
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>Rohan</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="assets/css/main.css" />
-	<noscript>
-		<link rel="stylesheet" href="assets/css/noscript.css" />
-	</noscript>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rohan Bhandari</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/fontawesome-all.min.css" />
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-card-hover: #1a1a2e;
+      --text: #e4e4e7;
+      --text-muted: #a1a1aa;
+      --accent: #818cf8;
+      --accent-hover: #a5b4fc;
+      --gradient-1: #818cf8;
+      --gradient-2: #c084fc;
+      --gradient-3: #f472b6;
+      --border: rgba(255,255,255,0.06);
+      --radius: 16px;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--accent-hover); }
+
+    /* ── Noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 2rem;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(129,140,248,0.12) 0%, rgba(192,132,252,0.06) 40%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: glow-pulse 8s ease-in-out infinite alternate;
+    }
+    @keyframes glow-pulse {
+      0% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+    }
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.2s forwards;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.4s forwards;
+    }
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.6s forwards;
+    }
+    .hero-links {
+      display: flex;
+      gap: 1rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.8s forwards;
+    }
+    .hero-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      transition: all 0.3s;
+    }
+    .hero-links a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(129,140,248,0.15);
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fade-up 0.8s 1s forwards;
+    }
+    .scroll-hint .line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scroll-line 2s ease-in-out infinite;
+    }
+    @keyframes scroll-line {
+      0%,100% { opacity: 0.3; transform: scaleY(0.6); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* ── Section base ── */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 3rem;
+      font-size: 1.05rem;
+    }
+    .divider {
+      max-width: 1100px;
+      margin: 0 auto;
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── About ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .about-text p {
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+    }
+    .about-text p strong {
+      color: var(--text);
+    }
+    .about-detail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+    }
+    .about-detail-card h3 {
+      font-size: 1rem;
+      margin-bottom: 1.25rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .detail-item:last-child { border-bottom: none; }
+    .detail-item .label { color: var(--text-muted); }
+    .detail-item .value { color: var(--text); font-weight: 500; }
+
+    /* ── Projects ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+    .project-card:hover {
+      border-color: rgba(129,140,248,0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      background: var(--bg-card-hover);
+    }
+    .project-card:hover::before { opacity: 1; }
+    .project-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .project-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    .project-icon.purple { background: rgba(129,140,248,0.12); color: var(--gradient-1); }
+    .project-icon.pink { background: rgba(244,114,182,0.12); color: var(--gradient-3); }
+    .project-icon.blue { background: rgba(56,189,248,0.12); color: #38bdf8; }
+    .project-icon.green { background: rgba(52,211,153,0.12); color: #34d399; }
+    .project-card-link {
+      color: var(--text-muted);
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    .project-card:hover .project-card-link { color: var(--accent); }
+    .project-card h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .project-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      flex: 1;
+      margin-bottom: 1.25rem;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .project-tags span {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      padding: 0.3rem 0.7rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-muted);
+    }
+
+    /* ── Readings ── */
+    .readings-list {
+      list-style: none;
+      display: grid;
+      gap: 0.5rem;
+    }
+    .readings-list li {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      transition: background 0.2s;
+      font-size: 1rem;
+    }
+    .readings-list li:hover {
+      background: var(--bg-card);
+    }
+    .readings-list li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .readings-list li .author {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .footer-cta {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 600;
+      margin-bottom: 2rem;
+    }
+    .footer-socials {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .footer-socials a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.4rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+    .footer-socials a:hover {
+      color: var(--text);
+      border-color: var(--accent);
+      background: rgba(129,140,248,0.06);
+    }
+    .footer-bottom {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Animations ── */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      section { padding: 4rem 1.5rem; }
+      .footer-socials { flex-direction: column; align-items: center; }
+    }
+  </style>
 </head>
+<body>
 
-<body class="is-preload">
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <span class="hero-tag">Software Engineer</span>
+    <h1>Hey, I'm <span class="gradient-text">Rohan</span>.</h1>
+    <p class="hero-subtitle">Building exceptionally useful software products with technical depth and a business mind.</p>
+    <div class="hero-links">
+      <a href="https://github.com/rohanbsher" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://linkedin.com/in/rohanbhandariuofsc" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://twitter.com/RohanBh38776826" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+    </div>
+    <div class="scroll-hint">
+      <div class="line"></div>
+    </div>
+  </div>
 
-	<!-- Wrapper -->
-	<div id="wrapper" class="fade-in">
+  <!-- ── About ── -->
+  <hr class="divider" />
+  <section id="about">
+    <div class="reveal">
+      <p class="section-label">01 / About</p>
+      <h2 class="section-title">A bit about me</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I attended <strong>USC Columbia</strong> with an initial pursuit of International Business, but quickly switched majors and graduated with a degree in <strong>Computer Engineering</strong>.</p>
+        <p>My primary focus is on utilizing my technical and business skills to develop exceptionally useful software products. I'm driven by the intersection of engineering and impact.</p>
+      </div>
+      <div class="about-detail-card reveal">
+        <h3>Details</h3>
+        <div class="detail-item">
+          <span class="label">Education</span>
+          <span class="value">USC Columbia</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Degree</span>
+          <span class="value">Computer Engineering</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Focus</span>
+          <span class="value">Full-Stack &amp; Systems</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Interests</span>
+          <span class="value">Software &amp; Business</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-		<!-- Intro -->
-		<div id="intro">
-			<h1>Hello, I'm Rohan.</h1>
-			<p>Welcome to my profile, checkout some of my project work.</p>
-			<ul class="actions">
-				<li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
-			</ul>
-		</div>
+  <!-- ── Projects ── -->
+  <hr class="divider" />
+  <section id="projects">
+    <div class="reveal">
+      <p class="section-label">02 / Projects</p>
+      <h2 class="section-title">What I've built</h2>
+      <p class="section-desc">A selection of projects showcasing backend systems, API design, and algorithmic thinking.</p>
+    </div>
+    <div class="projects-grid">
+      <a href="https://github.com/rohanbsher/microservicesProd" class="project-card reveal">
+        <div class="project-card-header">
+          <div class="project-icon purple"><i class="fas fa-cubes"></i></div>
+          <span class="project-card-link"><i class="fas fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <h3>Microservices</h3>
+        <p>A production-quality project utilizing Microservices architecture, deployed and hosted on Google Kubernetes Engine.</p>
+        <div class="project-tags">
+          <span>Kubernetes</span>
+          <span>Docker</span>
+          <span>GKE</span>
+          <span>Node.js</span>
+        </div>
+      </a>
+      <a href="https://github.com/rohanbsher/apiDevelopment" class="project-card reveal">
+        <div class="project-card-header">
+          <div class="project-icon blue"><i class="fas fa-cloud"></i></div>
+          <span class="project-card-link"><i class="fas fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <h3>API Development</h3>
+        <p>A web framework with fully integrated weather API fetching data from OpenWeatherAPI, displayed using Google Maps API.</p>
+        <div class="project-tags">
+          <span>REST API</span>
+          <span>Google Maps</span>
+          <span>OpenWeather</span>
+        </div>
+      </a>
+      <a href="https://github.com/rohanbsher/algorithms" class="project-card reveal">
+        <div class="project-card-header">
+          <div class="project-icon green"><i class="fas fa-code"></i></div>
+          <span class="project-card-link"><i class="fas fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <h3>Algorithms</h3>
+        <p>Working models for various sorting algorithms with visual demonstrations and performance comparisons.</p>
+        <div class="project-tags">
+          <span>Algorithms</span>
+          <span>Data Structures</span>
+          <span>Sorting</span>
+        </div>
+      </a>
+      <a href="https://github.com/rohanbsher/backendProjects" class="project-card reveal">
+        <div class="project-card-header">
+          <div class="project-icon pink"><i class="fas fa-terminal"></i></div>
+          <span class="project-card-link"><i class="fas fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <h3>Backend Projects</h3>
+        <p>A collection including a blog with Microservices, a newsletter service, a BMI calculator, and a random quote server.</p>
+        <div class="project-tags">
+          <span>Node.js</span>
+          <span>Express</span>
+          <span>Microservices</span>
+        </div>
+      </a>
+    </div>
+  </section>
 
-		<!-- Header -->
-		<header id="header">
-			<a class="logo">ਰੋਹਨ</a>
-		</header>
+  <!-- ── Readings ── -->
+  <hr class="divider" />
+  <section id="readings">
+    <div class="reveal">
+      <p class="section-label">03 / Readings</p>
+      <h2 class="section-title">Books &amp; essays I recommend</h2>
+      <p class="section-desc">Pieces that have shaped how I think about engineering, technology, and building things.</p>
+    </div>
+    <ul class="readings-list reveal">
+      <li>The Idea Factory: Bell Labs <span class="author">- Jon Gertner</span></li>
+      <li>Conquering the Electron <span class="author">- Derek Cheung &amp; Eric Brach</span></li>
+      <li>iWoz <span class="author">- Steve Wozniak</span></li>
+      <li>Modern Software Engineering <span class="author">- David Farley</span></li>
+      <li>The Clean Coder <span class="author">- Robert C. Martin</span></li>
+      <li><a href="https://moores.samaltman.com/">Moore's Law for Everything</a> <span class="author">- Sam Altman</span></li>
+      <li><a href="https://tom.preston-werner.com/2011/03/29/ten-lessons-from-githubs-first-year.html">Ten Lessons from GitHub's First Year</a> <span class="author">- Tom Preston-Werner</span></li>
+      <li>The Innovators <span class="author">- Walter Isaacson</span></li>
+      <li>Particle Physics for Non-Physicists <span class="author">- Steven Pollock</span></li>
+      <li>What You Do Is Who You Are <span class="author">- Ben Horowitz</span></li>
+      <li>The Startup of You <span class="author">- Reid Hoffman</span></li>
+      <li>How to Avoid a Climate Disaster <span class="author">- Bill Gates</span></li>
+    </ul>
+  </section>
 
-		<!-- Nav -->
-		<nav id="nav">
-			<ul class="links">
-				<li class="active"><a href="index.html">Projects</a></li>
-				<li><a href="personal.html">Bio</a></li>
-				<!-- <li><a href="elements.html">Elements Reference</a></li> -->
-			</ul>
-			<ul class="icons">
-				<li><a href="https://twitter.com/RohanBh38776826" class="icon brands fa-twitter"><span
-							class="label">Twitter</span></a></li>
-				<li><a href="https://github.com/rohanbsher" class="icon brands fa-github"><span
-							class="label">GitHub</span></a></li>
-				<li><a href="https://linkedin.com/in/rohanbhandariuofsc" class="icon brands fa-linkedin"><span
-							class="label">LinkedIn</span></a></li>
-			</ul>
-		</nav>
+  <!-- ── Footer ── -->
+  <hr class="divider" />
+  <footer>
+    <p class="footer-cta reveal">Let's connect.</p>
+    <div class="footer-socials reveal">
+      <a href="https://github.com/rohanbsher"><i class="fab fa-github"></i> GitHub</a>
+      <a href="https://linkedin.com/in/rohanbhandariuofsc"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+      <a href="https://twitter.com/RohanBh38776826"><i class="fab fa-twitter"></i> Twitter</a>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Rohan Bhandari</p>
+    </div>
+  </footer>
 
-		<!-- Main -->
-		<div id="main">
-
-			<!-- Featured Post -->
-			<article class="post featured">
-				<header class="major">
-					<h2><a href="https://github.com/rohanbsher">git</a></h2>
-					<p>I've built this page to keep track of my projects and share what I'm working on.</p>
-				</header>
-			</article>
-
-			<!-- Posts -->
-			<section class="posts">
-				<article>
-					<header>
-						<h2><a href="https://github.com/rohanbsher/microservicesProd">Microservices<br /></a></h2>
-					</header>
-					<a href="https://github.com/rohanbsher/microservicesProd" class="image fit"><img
-							src="images/micro.png" alt="" /></a>
-					<p>A production-quality project that utilizes Microservices architecture.</p>
-					<p>Utilizing Google Kubernetes Engine to deploy and host the services.</p>
-				</article>
-
-				<article>
-					<header>
-						<h2><a href="https://github.com/rohanbsher/apiDevelopment">API Development<br /></a></h2>
-					</header>
-					<a href="https://github.com/rohanbsher/apiDevelopment" class="image fit"><img
-							src="images/system.jpeg" alt="" /></a>
-					<p>I've developed a web framework, fully integrated weather API that fetches data from
-						OpenWeatherAPI and displays current data using Google Maps API.</p>
-				</article>
-				<article>
-					<header>
-						<h2><a href="https://github.com/rohanbsher/algorithms">Algorithms<br /></a></h2>
-					</header>
-					<a href="https://github.com/rohanbsher/algorithms" class="image fit"><img src="images/algos.jpeg"
-							alt="" /></a>
-					<p>Working models for Various Sorting Algorithms.</p>
-				</article>
-				<article>
-					<header>
-						<h2>
-							<a href="https://github.com/rohanbsher/backendProjects">Backend Projects<br /> </a>
-						</h2>
-					</header>
-					<a href="https://github.com/rohanbsher/backendProjects" class="image fit"><img
-							src="images/terminal.jpeg" alt="" /></a>
-					<p>A collection of various Back-End projects that I've worked on, including a blog project utilizing
-						Microservices architecture, a newsletter registration service, a calculator app for BMI, and a
-						server for generating random quotes.</p>
-				</article>
-			</section>
-
-			<!-- Footer -->
-			<footer id="footer">
-				<section>
-					<h3 style="text-align: center;">Socials</h3>
-					<ul class="icons alt" , style="text-align: center;">
-						<li><a href="https://twitter.com/RohanBh38776826" class="icon brands fa-twitter"><span
-									class="label">Twitter</span></a></li>
-						<li><a href="https://github.com/rohanbsher" class="icon brands fa-github"><span
-									class="label">GitHub</span></a></li>
-						<li><a href="https://linkedin.com/in/rohanbhandariuofsc" class="icon brands fa-linkedin"><span
-									class="label">LinkedIn</span></a></li>
-					</ul>
-				</section>
-			</footer>
-
-			<!-- Copyright -->
-			<div id="copyright">
-				<ul>
-					<li>&copy; Rohan</li>
-				</ul>
-			</div>
-
-		</div>
-
-		<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
-
-	</div>
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    let delay = 0;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+  </script>
 
 </body>
-
 </html>
